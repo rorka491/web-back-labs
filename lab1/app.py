@@ -29,3 +29,21 @@ def image():
         "image_path": image_path
     }
     return template.render(data)
+
+
+
+count = 0
+@app.route('/counter')
+def counter():
+    template = environment.get_template('counter.html')
+    global count
+    count += 1 
+    data = {
+        "count": count
+    } 
+    return template.render(data)
+
+
+
+    
+    
