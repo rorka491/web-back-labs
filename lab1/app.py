@@ -10,7 +10,11 @@ environment = Environment(loader=FileSystemLoader("templates/"))
 @app.route("/web")
 def web():
     template = environment.get_template("base.html")
-    return template.render()
+    headers={
+        'X-Server': 'sample',
+        'Content-Type': 'text/plain; charset=utf-8'
+    }
+    return template.render(), 200, headers
 
 
 @app.route("/author")
@@ -71,9 +75,8 @@ def created():
 @app.errorhandler(404)
 def not_found(error):
     template = environment.get_template("error404.html")
-
+    
     return template.render(), 404
 
 
 
-    
