@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, url_for
 from jinja2 import Environment, FileSystemLoader
 
 app = Flask(__name__)
@@ -21,4 +21,11 @@ def get_author():
     }                  
     return template.render(data)
 
-
+@app.route('/image')
+def image():
+    template = environment.get_template("image.html")
+    image_path = url_for("static", filename="ЯнТоплес.jpeg")
+    data = {
+        "image_path": image_path
+    }
+    return template.render(data)
