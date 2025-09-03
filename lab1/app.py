@@ -61,3 +61,9 @@ def clear_counter():
 def info():
     return redirect("/author")
 
+
+@app.route('/created')
+def created():
+    template = environment.get_template("create.html")
+
+    return template.render(), 201
