@@ -57,3 +57,7 @@ def clear_counter():
     return redirect(url_for('counter'))
 
 
+@app.route('/info')
+def info():
+    return redirect("/author")
+
