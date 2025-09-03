@@ -2,7 +2,12 @@
 
 {% block content %}
 <p>Сколько раз вы сюда заходили: {{count}}</p>
-<button>Сбросить</button>
+<p>Дата и время: {{ time }}</p>
+<p>Запрошенный адрес: {{ client_ip }}</p>
+<p>url адрес: {{ url }}</p>
+<a href="http://127.0.0.1:5000/reset" class="button">Сбросить</a>
+
 {% endblock content %}
+
 
 
