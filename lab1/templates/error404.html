@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>404 — Страница не найдена</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --bg2: #08101a;
+      --accent: #7c3aed;
+      --muted: #94a3b8;
+      --glass: rgba(255,255,255,0.04);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent 8%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      display:flex;align-items:center;justify-content:center;padding:32px;
+    }
+    .card{
+      width:100%;max-width:1100px;display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:20px;padding:36px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 10px 40px rgba(2,6,23,0.6);
+      backdrop-filter: blur(6px);
+    }
+    @media (max-width:880px){.card{grid-template-columns:1fr;max-width:760px;padding:28px}}
+
+    .left{
+      padding:18px 6px;
+    }
+    .kicker{
+      display:inline-block;padding:6px 12px;border-radius:999px;background:var(--glass);color:var(--muted);font-weight:600;font-size:13px;margin-bottom:18px
+    }
+    h1{font-size:72px;line-height:0.9;margin:0 0 6px;font-weight:800;letter-spacing:-2px;color:white}
+    @media (max-width:560px){h1{font-size:48px}}
+    p.lead{margin:0 0 18px;color:var(--muted);font-size:17px}
+
+    .actions{display:flex;gap:12px;margin-top:18px}
+    .btn{
+      appearance:none;border:0;padding:12px 18px;border-radius:12px;font-weight:700;cursor:pointer;
+      background:linear-gradient(90deg,var(--accent),#4f46e5);color:white;box-shadow:0 6px 20px rgba(79,70,229,0.16);
+    }
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:600}
+
+    .meta{margin-top:12px;color:var(--muted);font-size:13px}
+
+    /* Illustration column */
+    .right{display:flex;align-items:center;justify-content:center;padding:10px}
+    .scene{width:100%;max-width:420px;height:320px;position:relative}
+    .orb{
+      position:absolute;right:8%;top:8%;width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#7c3aed33,#60a5fa33);filter:blur(22px);
+    }
+    /* little floating card */
+    .robot{
+      width:100%;height:100%;display:flex;align-items:center;justify-content:center;transform:translateY(0);animation:float 6s ease-in-out infinite;
+    }
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
+
+    /* small responsive tweaks */
+    footer{display:flex;gap:12px;align-items:center;margin-top:18px;color:var(--muted);font-size:13px}
+
+    /* SVG style */
+    .svg-404{width:320px;height:auto;max-width:100%}
+    .btn:active{transform:translateY(1px)}
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <section class="left">
+      <div class="kicker">Ошибка 404</div>
+      <h1>Страница не найдена</h1>
+      <p class="lead">Похоже, путь, по которому вы шли, ведёт в пустоту. Возможно, страница была удалена или вы ошиблись в адресе.</p>
+
+      <div class="actions">
+        <a class="btn" href="/">На главную</a>
+        <a class="btn ghost" href="javascript:history.back()">Вернуться назад</a>
+      </div>
+
+      <div class="meta">Если это важно — сообщите нам: <a href="mailto:admin@example.com" style="color:inherit;text-decoration:underline;opacity:0.9">admin@example.com</a></div>
+
+      <footer>
+        <div>© <strong>YourSite</strong></div>
+        <div style="opacity:.6">•</div>
+        <div>Запрошенный URL: <span style="font-family:monospace;color:#cbd5e1">/тут/ваш/путь</span></div>
+      </footer>
+    </section>
+
+    <aside class="right" aria-hidden="true">
+      <div class="scene">
+        <div class="orb"></div>
+        <div class="robot">
+          <!-- Friendly robot SVG illustration (customizable) -->
+          <svg class="svg-404" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="404 illustration">
+            <rect x="0" y="0" width="600" height="400" rx="20" fill="transparent" />
+            <g transform="translate(100,40)">
+              <circle cx="150" cy="120" r="96" fill="url(#g1)" opacity="0.06"/>
+              <rect x="88" y="40" width="124" height="120" rx="20" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" />
+              <g transform="translate(110,60)">
+                <rect x="6" y="6" width="92" height="64" rx="10" fill="#0b1220" stroke="#152033" />
+                <circle cx="24" cy="32" r="8" fill="#fff" opacity="0.95"/>
+                <circle cx="68" cy="32" r="8" fill="#fff" opacity="0.95"/>
+                <rect x="24" y="50" width="44" height="6" rx="3" fill="#0b1220" />
+              </g>
+
+              <g transform="translate(70,180)">
+                <rect x="0" y="0" width="220" height="12" rx="6" fill="rgba(255,255,255,0.02)" />
+              </g>
+
+              <g transform="translate(0,14)">
+                <text x="12" y="40" font-size="92" font-weight="700" fill="#cbd5e1">4<tspan fill="#7c3aed">0</tspan>4</text>
+              </g>
+
+            </g>
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#7c3aed" stop-opacity="0.18" />
+                <stop offset="1" stop-color="#60a5fa" stop-opacity="0.06" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </aside>
+  </main>
+</body>
+</html>

@@ -65,5 +65,15 @@ def info():
 @app.route('/created')
 def created():
     template = environment.get_template("create.html")
-
     return template.render(), 201
+
+
+@app.errorhandler(404)
+def not_found(error):
+    template = environment.get_template("error404.html")
+
+    return template.render(), 404
+
+
+
+    
