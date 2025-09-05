@@ -32,7 +32,7 @@ def get_author():
 def image():
     template = environment.get_template("image.html")
     image_path = url_for("static", filename="ЯнТоплес.jpeg")
-    data = {"image_path": image_path}
+    data = {"image_path": image_path, "url_for": url_for}
     return template.render(data)
 
 
