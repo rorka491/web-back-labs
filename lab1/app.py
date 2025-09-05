@@ -91,4 +91,14 @@ def not_found(error):
 
     return template.render(), 404
 
+@lab1.route('')
+def title():
+    template = environment.get_template("lab1.html")
+    return template.render()
+
 app.register_blueprint(lab1)
+
+                                                    
+
+
+                                
