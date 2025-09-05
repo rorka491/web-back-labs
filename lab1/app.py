@@ -1,13 +1,24 @@
 import datetime
-from flask import Flask, redirect, request, url_for
+from flask import Flask, redirect, request, url_for, Blueprint
 from jinja2 import Environment, FileSystemLoader
 
 app = Flask(__name__)
 
+
 environment = Environment(loader=FileSystemLoader("templates/"))
 
 
-@app.route("/web")
+@app.route("/")
+@app.route("/index")
+def index():
+    template = environment.get_template("index.html")
+    return template.render(), 200
+
+
+lab1 = Blueprint("lab1", __name__, url_prefix="/lab1")
+
+
+@lab1.route("/web")
 def web():
     template = environment.get_template("base.html")
     headers={
@@ -17,7 +28,7 @@ def web():
     return template.render(), 200, headers
 
 
-@app.route("/author")
+@lab1.route("/author")
 def get_author():
     template = environment.get_template("author.html")
     data = {
@@ -28,7 +39,7 @@ def get_author():
     return template.render(data)
 
 
-@app.route("/image")
+@lab1.route("/image")
 def image():
     template = environment.get_template("image.html")
     image_path = url_for("static", filename="ЯнТоплес.jpeg")
@@ -38,7 +49,8 @@ def image():
 
 count = 0
 
-@app.route("/counter")
+
+@lab1.route("/counter")
 def counter():
     template = environment.get_template("counter.html")
     global count
@@ -54,29 +66,29 @@ def counter():
     }
     return template.render(data)
 
-@app.route("/reset")
+
+@lab1.route("/reset")
 def clear_counter():
     global count
     count = 0
     return redirect(url_for('counter'))
 
 
-@app.route('/info')
+@lab1.route("/info")
 def info():
     return redirect("/author")
 
 
-@app.route('/created')
+@lab1.route("/created")
 def created():
     template = environment.get_template("create.html")
     return template.render(), 201
 
 
-@app.errorhandler(404)
+@lab1.errorhandler(404)
 def not_found(error):
     template = environment.get_template("error404.html")
-    
+
     return template.render(), 404
 
-
-
+app.register_blueprint(lab1)
