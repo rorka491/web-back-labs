@@ -44,7 +44,12 @@ def image():
     template = environment.get_template("image.html")
     image_path = url_for("static", filename="ЯнТоплес.jpeg")
     data = {"image_path": image_path, "url_for": url_for}
-    return template.render(data)
+    headers = {
+        'X-Foo': 'Bar',
+        'X-SpecialHeader': '1984',
+        'Content-Language': 'ru' 
+    }
+    return template.render(data), 200 , headers 
 
 
 count = 0
@@ -71,7 +76,7 @@ def counter():
 def clear_counter():
     global count
     count = 0
-    return redirect(url_for('counter'))
+    return redirect(url_for("lab1.counter"))
 
 
 @lab1.route("/info")
