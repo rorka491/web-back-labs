@@ -85,16 +85,11 @@ def created():
     return template.render(), 201
 
 
-@lab1.errorhandler(404)
-def not_found(error):
-    template = environment.get_template("error404.html")
-
-    return template.render(), 404
-
 @lab1.route('')
 def title():
     template = environment.get_template("lab1.html")
     return template.render()
+
 
 app.register_blueprint(lab1)
 
@@ -127,3 +122,23 @@ def method_not_allowed():
 @app.route("/418")
 def teapot():
     return "418 I'm a teapot", 418
+
+
+@app.errorhandler(404)
+def not_found(error):
+    template = environment.get_template("error404.html")
+    url = request.url
+    data = {
+        "url": url
+    }
+    return template.render(data), 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    return "На сервере произошла ошибка. Попробуйте позже.", 500
+
+
+@app.route("/crash")
+def crash():
+    1 / 0
