@@ -26,7 +26,7 @@
       display:flex;align-items:center;justify-content:center;padding:32px;
     }
     .card{
-      width:100%;max-width:1100px;display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center;
+      width:100%;max-width:900px;align-items:center;
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
       border-radius:20px;padding:36px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 10px 40px rgba(2,6,23,0.6);
       backdrop-filter: blur(6px);
@@ -67,14 +67,12 @@
     /* small responsive tweaks */
     footer{display:flex;gap:12px;align-items:center;margin-top:18px;color:var(--muted);font-size:13px}
 
-    /* SVG style */
     .svg-404{width:320px;height:auto;max-width:100%}
     .btn:active{transform:translateY(1px)}
   </style>
 </head>
 <body>
   <main class="card" role="main">
-    <section class="left">
       <div class="kicker">Ошибка 404</div>
       <h1>Страница не найдена</h1>
       <p class="lead">Похоже, путь, по которому вы шли, ведёт в пустоту. Возможно, страница была удалена или вы ошиблись в адресе.</p>
@@ -85,48 +83,31 @@
       </div>
 
       <footer>
-        <div>© <strong>MySite</strong></div>
+        <div><strong>MySite</strong></div>
         <div style="opacity:.6">•</div>
         <div>Запрошенный URL: <span style="font-family:monospace;color:#cbd5e1">{{url}}</span></div>
-      </footer>
-    </section>
-
-    <aside class="right" aria-hidden="true">
-      <div class="scene">
-        <div class="orb"></div>
-        <div class="robot">
-          <!-- Friendly robot SVG illustration (customizable) -->
-          <svg class="svg-404" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="404 illustration">
-            <rect x="0" y="0" width="600" height="400" rx="20" fill="transparent" />
-            <g transform="translate(100,40)">
-              <circle cx="150" cy="120" r="96" fill="url(#g1)" opacity="0.06"/>
-              <rect x="88" y="40" width="124" height="120" rx="20" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" />
-              <g transform="translate(110,60)">
-                <rect x="6" y="6" width="92" height="64" rx="10" fill="#0b1220" stroke="#152033" />
-                <circle cx="24" cy="32" r="8" fill="#fff" opacity="0.95"/>
-                <circle cx="68" cy="32" r="8" fill="#fff" opacity="0.95"/>
-                <rect x="24" y="50" width="44" height="6" rx="3" fill="#0b1220" />
-              </g>
-
-              <g transform="translate(70,180)">
-                <rect x="0" y="0" width="220" height="12" rx="6" fill="rgba(255,255,255,0.02)" />
-              </g>
-
-              <g transform="translate(0,14)">
-                <text x="12" y="40" font-size="92" font-weight="700" fill="#cbd5e1">4<tspan fill="#7c3aed">0</tspan>4</text>
-              </g>
-
-            </g>
-            <defs>
-              <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0" stop-color="#7c3aed" stop-opacity="0.18" />
-                <stop offset="1" stop-color="#60a5fa" stop-opacity="0.06" />
-              </linearGradient>
-            </defs>
-          </svg>
+        <div>Адрес пользователя: <span style="font-family:monospace;color:#cbd5e1">{{client_ip}}</span></div>
+        <div>
+          Время запроса: 
+          <span style="font-family:monospace;color:#cbd5e1">{{time}}</span>
         </div>
-      </div>
-    </aside>
+
+      </footer>
+      <details style="margin-top:1rem; max-width:100%">
+        <summary style="cursor:pointer;color:#0ea5e9">Полный лог</summary>
+        <pre style="
+          background:#000000;
+          padding:.75rem;
+          border-radius:.5rem;
+          max-height:250px;
+          overflow:auto;
+          white-space:pre-wrap;    /* перенос строк */
+          word-wrap:break-word;    /* перенос длинных слов */
+          max-width:100%;          /* ограничение по ширине */
+          box-sizing:border-box;   /* учитываем padding */
+        ">{{ log_content }}</pre>
+      </details>
+
   </main>
 </body>
 </html>

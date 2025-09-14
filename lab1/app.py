@@ -1,11 +1,23 @@
 import datetime
 from flask import Flask, redirect, request, url_for, Blueprint
 from jinja2 import Environment, FileSystemLoader
+import logging
+
 
 app = Flask(__name__)
 
 
 environment = Environment(loader=FileSystemLoader("templates/"))
+
+# Лог в файл
+logging.basicConfig(
+    filename="app.log", level=logging.INFO, format="%(asctime)s - %(message)s"
+)
+
+
+@app.before_request
+def log_request():
+    logging.info("Запрос: %s %s", request.method, request.path)
 
 
 @app.route("/")
@@ -81,7 +93,7 @@ def clear_counter():
 
 @lab1.route("/info")
 def info():
-    return redirect("/author")
+    return redirect("/lab1/author")
 
 
 @lab1.route("/created")
@@ -133,8 +145,16 @@ def teapot():
 def not_found(error):
     template = environment.get_template("error404.html")
     url = request.url
+    client_ip = request.remote_addr
+    time = datetime.datetime.today()
+    with open("app.log", "r", encoding="utf-8") as f:
+        log_content = f.read()
+
     data = {
-        "url": url
+        "url": url,
+        "client_ip": client_ip,
+        "time": time,
+        "log_content": log_content
     }
     return template.render(data), 404
 
