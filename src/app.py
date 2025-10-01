@@ -1,4 +1,3 @@
-from crypt import methods
 import datetime
 from flask import Flask, redirect, render_template, request, url_for, Blueprint, abort
 from jinja2 import Environment, FileSystemLoader
@@ -146,8 +145,7 @@ def crash():
 @lab2.route("/")
 @lab2.route("/index")
 def index():
-    template = environment.get_template("index.html")
-    return template.render(), 200
+    return render_template("lab2.html", lab_num=3, name="Родион")
 
 @lab2.route("/a")
 def without_slash():
@@ -186,7 +184,16 @@ def add_flower(name):
 
 @lab2.route("/example")
 def example() -> str:
-    return render_template("example.html", name="Родион")
+    fruits = ["Груша", "Яблоко", "Арбуз", "Дыня", "Апельсин", "Огурец"]
+    fruits = [
+        {"name": "Груша", "price": 100},
+        {"name": "Яблоко", "price": 120},
+        {"name": "Арбуз", "price": 130},
+        {"name": "Дыня", "price": 90},
+        {"name": "Апельсин", "price": 70},
+        {"name": "Огурец", "price": 200},
+    ]
+    return render_template("example.html", name="Родион", fruits=fruits)
 
 
 

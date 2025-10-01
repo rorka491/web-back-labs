@@ -9,6 +9,15 @@
 {% endblock title %}
 
 {% block content %}
+<header> {%if lab_num%}Лаборторная работа {{lab_num}} {%endif%}</header>
+Горшков Родион Станиславович
 
+<footer>
+    {% if name %}
+    {{name}}
+    {%else%}
+    Анонимус
+    {%endif%}
+</footer>
 {% endblock content %}
 
