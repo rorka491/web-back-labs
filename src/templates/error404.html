@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>404 — Страница не найдена</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #0f172a;
+      --bg2: #08101a;
+      --accent: #7c3aed;
+      --muted: #94a3b8;
+      --glass: rgba(255,255,255,0.04);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent 8%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      display:flex;align-items:center;justify-content:center;padding:32px;
+    }
+    .card{
+      width:100%;max-width:900px;align-items:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:20px;padding:36px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 10px 40px rgba(2,6,23,0.6);
+      backdrop-filter: blur(6px);
+    }
+    @media (max-width:880px){.card{grid-template-columns:1fr;max-width:760px;padding:28px}}
+
+    .left{
+      padding:18px 6px;
+    }
+    .kicker{
+      display:inline-block;padding:6px 12px;border-radius:999px;background:var(--glass);color:var(--muted);font-weight:600;font-size:13px;margin-bottom:18px
+    }
+    h1{font-size:72px;line-height:0.9;margin:0 0 6px;font-weight:800;letter-spacing:-2px;color:white}
+    @media (max-width:560px){h1{font-size:48px}}
+    p.lead{margin:0 0 18px;color:var(--muted);font-size:17px}
+
+    .actions{display:flex;gap:12px;margin-top:18px}
+    .btn{
+      appearance:none;border:0;padding:12px 18px;border-radius:12px;font-weight:700;cursor:pointer;
+      background:linear-gradient(90deg,var(--accent),#4f46e5);color:white;box-shadow:0 6px 20px rgba(79,70,229,0.16);
+    }
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:600}
+
+    .meta{margin-top:12px;color:var(--muted);font-size:13px}
+
+    /* Illustration column */
+    .right{display:flex;align-items:center;justify-content:center;padding:10px}
+    .scene{width:100%;max-width:420px;height:320px;position:relative}
+    .orb{
+      position:absolute;right:8%;top:8%;width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#7c3aed33,#60a5fa33);filter:blur(22px);
+    }
+    /* little floating card */
+    .robot{
+      width:100%;height:100%;display:flex;align-items:center;justify-content:center;transform:translateY(0);animation:float 6s ease-in-out infinite;
+    }
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
+
+    /* small responsive tweaks */
+    footer{display:flex;gap:12px;align-items:center;margin-top:18px;color:var(--muted);font-size:13px}
+
+    .svg-404{width:320px;height:auto;max-width:100%}
+    .btn:active{transform:translateY(1px)}
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+      <div class="kicker">Ошибка 404</div>
+      <h1>Страница не найдена</h1>
+      <p class="lead">Похоже, путь, по которому вы шли, ведёт в пустоту. Возможно, страница была удалена или вы ошиблись в адресе.</p>
+
+      <div class="actions">
+        <a class="btn" href="/">На главную</a>
+        <a class="btn ghost" href="javascript:history.back()">Вернуться назад</a>
+      </div>
+
+      <footer>
+        <div><strong>MySite</strong></div>
+        <div style="opacity:.6">•</div>
+        <div>Запрошенный URL: <span style="font-family:monospace;color:#cbd5e1">{{url}}</span></div>
+        <div>Адрес пользователя: <span style="font-family:monospace;color:#cbd5e1">{{client_ip}}</span></div>
+        <div>
+          Время запроса: 
+          <span style="font-family:monospace;color:#cbd5e1">{{time}}</span>
+        </div>
+
+      </footer>
+      <details style="margin-top:1rem; max-width:100%">
+        <summary style="cursor:pointer;color:#0ea5e9">Полный лог</summary>
+        <pre style="
+          background:#000000;
+          padding:.75rem;
+          border-radius:.5rem;
+          max-height:250px;
+          overflow:auto;
+          white-space:pre-wrap;    /* перенос строк */
+          word-wrap:break-word;    /* перенос длинных слов */
+          max-width:100%;          /* ограничение по ширине */
+          box-sizing:border-box;   /* учитываем padding */
+        ">{{ log_content }}</pre>
+      </details>
+
+  </main>
+</body>
+</html>
