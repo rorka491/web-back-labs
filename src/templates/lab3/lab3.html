@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+{% block lab %}
+    лабораторная работа 3
+{% endblock %}
+
+{% block content %}
+    <h1>Формы, cokkie</h1>
+    <div>Привет <span style="color: {{name_color}}">{{  name  }}</span></div>
+    <ol>
+        <li><a href="/lab3/cookie">Куки</a></li>
+        <li><a href="/lab3/del_cookie">Удалить куки</a></li>
+    </ol>
+{% endblock %}

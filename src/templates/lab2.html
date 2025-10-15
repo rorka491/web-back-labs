@@ -9,6 +9,22 @@
 {% endblock title %}
 
 {% block content %}
+<a href="/">Назад на корень сайта</a>
+<h2>Список роутов</h2>
+<ul>
+    <li><a href="/">Главная</a></li>
+    <li><a href="/lab2">Лабораторная 2</a></li>
+    <li><a href="/lab2/example">Пример</a></li>
+    <li><a href="/lab2/a/">Слеш</a></li>
+    <li><a href="/lab2/a">Без слэша</a></li>
+    <li><a href="/lab2/delete_flowers">Удалить цветы</a></li>
+    <li><a href="/lab2/flowers/1">Первый цветок</a></li>
+    <li><a href="/lab2/flowers">Все цветы</a></li>
+    <li><a href="/lab2/add_flower/Роза ">Добавить розу</a></li>
+    <li><a href="/lab2/filters">Фильтры</a></li>
+    <li><a href="/lab2/calc/2/4">Вычисления</a></li>
+
+</ul>
 <header> {%if lab_num%}Лаборторная работа {{lab_num}} {%endif%}</header>
 Горшков Родион Станиславович
 

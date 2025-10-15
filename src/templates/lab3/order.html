@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+
+{% block lab %}
+    лабораторная работа 3
+{% endblock %}
+
+
+{% block content %}
+    {% if drink %}
+        <h1>Ваш напиток готов!</h1>
+        
+        <div>
+            Детали заказа
+            Напиток: {{drink}}
+            Молоко: {{ 'есть' if milk else 'нет' }}
+            Сахар: {{ 'есть' if sugar else 'нет' }}
+        </div>
+        <div>
+            <a href="/lab3/order">Заново</a>
+        </div>
+    {% else %}
+        <h1>Заказ напитка</h1>
+
+        <form action="/lab3/pay">
+            <div>Напиток:</div>
+            <label>
+                <input type="radio" value="coffee" name="drink" checked>кофе
+            </label>
+            <label>
+                <input type="radio" value="black-tea" name="drink">чёрный чай
+            </label>
+            <label>
+                <input type="radio" value="green-tea" name="drink">зелёный чай
+            </label>
+            <div>Добавки:</div>
+            <label>
+                <input type="checkbox" name="milk">молоко
+            </label>
+            <label>
+                <input type="checkbox" name="sugar">сахар
+            </label>
+            <div>
+                <button type="submit">Заказать</button>
+            </div>
+        </form>
+    {% endif %}
+
+{% endblock %}
+
+
+
