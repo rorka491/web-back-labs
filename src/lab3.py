@@ -67,12 +67,21 @@ def pay():
     return render_template('/lab3/pay.html', price=price)
 
 @lab3.route("/success")
-def succes():
+def success():
     return make_response('Успех')
 
+@lab3.route("/settings")
+def settings():
+    color = request.args.get('color')
+    
+    if color:
+        response = make_response(render_template('lab3/settings.html'))
+        response.set_cookie('color', color)
 
-
-
+    color = request.cookies.get('color')
+    response = make_response(render_template('lab3/settings.html', color=color))
+    
+    return response
 
 
 

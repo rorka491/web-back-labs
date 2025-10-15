@@ -7,7 +7,7 @@ lab2 = Blueprint("lab2", __name__, url_prefix="/lab2")
 @lab2.route("/")
 @lab2.route("/index")
 def index():
-    return render_template("lab2.html", lab_num=3, name="Родион")
+    return render_template("lab2/lab2.html", lab_num=3, name="Родион")
 
 @lab2.route("/a")
 def without_slash():
@@ -78,12 +78,12 @@ def example() -> str:
         {"name": "Апельсин", "price": 70},
         {"name": "Огурец", "price": 200},
     ]
-    return render_template("example.html", name="Родион", fruits=fruits)
+    return render_template("lab2/example.html", name="Родион", fruits=fruits)
 
 @lab2.route("/filters")
 def filters():
     phrase = "<h1>Это уже <i>было</i> в симпсонах</h1>"
-    return render_template('filters.html', phrase=phrase)
+    return render_template('lab2/filters.html', phrase=phrase)
 
 @lab2.route("/calc/", defaults={"a": 1, "b": 1})
 @lab2.route("/calc/<int:a>/", defaults={"b": 1})
@@ -97,7 +97,7 @@ def math_operations(a, b):
         "div": a / b if b != 0 else "На 0 делить нельзя",
         "pow": a ** b
     }
-    return render_template("math.html", a=a, b=b, result=result)
+    return render_template("lab2/math.html", a=a, b=b, result=result)
 
 
 

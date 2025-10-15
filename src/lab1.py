@@ -10,7 +10,7 @@ def web():
         'X-Server': 'sample',
         'Content-Type': 'text/plain; charset=utf-8'
     }
-    return render_template("base.html"), 200, headers
+    return render_template("lab1/base.html"), 200, headers
 
 
 @lab1.route("/author")
@@ -20,7 +20,7 @@ def get_author():
         "group": "ФБИ 31",
         "faculty": "ФБ",
     }
-    return render_template("author.html", data=data)
+    return render_template("lab1/author.html", data=data)
 
 
 @lab1.route("/image")
@@ -51,7 +51,7 @@ def counter():
         "client_ip": client_ip, 
         "url": url
     }
-    return render_template("counter.html", data=data), 200
+    return render_template("lab1/counter.html", data=data), 200
 
 
 @lab1.route("/reset")
@@ -68,12 +68,12 @@ def info():
 
 @lab1.route("/created")
 def created():
-    return render_template("create.html"), 201
+    return render_template("lab1/create.html"), 201
 
 
 @lab1.route('')
 def title():
-    return render_template("lab1.html")
+    return render_template("lab1/lab1.html")
 
 
 
