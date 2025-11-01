@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Список пользователей</h2>
+
+{% if not authorized %}
+<p>Вы не авторизованы. <a href="{{ url_for('lab4.login') }}">Войти</a></p>
+{% else %}
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Имя</th>
+        <th>Логин</th>
+        <th>Действия</th>
+    </tr>
+
+    {% for id, user in users.items() %}
+    <tr>
+        <td>{{ user.name }}</td>
+        <td>{{ user.login }}</td>
+        <td>
+            {% if session.get('login') == user.login %}
+                <form method="post" action="{{ url_for('lab4.edit_user', user_id=id) }}" style="display:inline;">
+                    <button type="submit">Редактировать</button>
+                </form>
+                <form method="post" action="{{ url_for('lab4.delete_user', user_id=id) }}" style="display:inline;">
+                    <button type="submit">Удалить</button >
+                </form>
+            {% else %}
+                —
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{{ url_for('lab4.logout') }}">Выйти</a>
+{% endif %}
+{% endblock %}

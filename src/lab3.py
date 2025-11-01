@@ -75,14 +75,12 @@ def settings():
     color = request.args.get('color')
     
     if color:
-        response = make_response(render_template('lab3/settings.html'))
+        response = make_response(redirect('/lab3/settings'))
         response.set_cookie('color', color)
+        return response
 
     color = request.cookies.get('color')
     response = make_response(render_template('lab3/settings.html', color=color))
     
     return response
-
-
-
 

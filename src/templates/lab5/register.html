@@ -1,0 +1,32 @@
+{% extends 'lab5/lab5.html' %}
+
+{% block content %}
+<h1>Регистрация</h1>
+<form action="" method="post">
+    <div>
+        <span>
+        {% if error %}
+            {{error}}
+        {% endif %}
+        </span>
+    </div>
+    <div>
+        <label>
+            Имя пользователя: <input type="text" name="username" id="">
+        </label>
+    </div>
+    <div>
+        <label>
+            Логин: <input type="text" name="login" id="">
+        </label>
+    </div>
+    <div>
+        <label>
+            Пароль: <input type="password" name="password" id="">
+        </label>
+    </div>
+    <button type="submit">
+        Зарегистрироваться
+    </button>
+</form>
+{% endblock %}

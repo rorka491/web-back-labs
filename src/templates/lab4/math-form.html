@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+
+{% block lab %}
+    лабораторная работа 4
+{% endblock %}
+
+{% block content %}
+    <form action="/lab4/{{operation}}" method="post">
+        <h1>Арифмитические операции</h1>
+        <input type="number" name="x1" > {{operations_mapping[operation]}} <input type="number" name="x2">
+        <input type="submit" value="=">
+    </form>
+{% endblock %}

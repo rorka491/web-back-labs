@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Холодильник</h2>
+
+<form method="post">
+    <label for="temperature">Введите температуру (°C):</label>
+    <input type="number" name="temperature" id="temperature" step="1">
+    <button type="submit">Установить</button>
+</form>
+
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}
+
+{% if snowflakes > 0 %}
+    <p style="color: blue; font-size: 2em;">
+        {% for _ in range(snowflakes) %}
+            ❄️
+        {% endfor %}
+    </p>
+{% endif %}
+{% endblock %}

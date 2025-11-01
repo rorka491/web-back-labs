@@ -1,20 +1,34 @@
-import datetime
-from flask import Flask, redirect, render_template, request, url_for, Blueprint, abort
-from jinja2 import Environment, FileSystemLoader
+from quart import Quart, render_template
 from lab1 import lab1
 from lab2 import lab2
 from lab3 import lab3
+from lab4 import lab4
+from lab5 import lab5
+from tortoise import Tortoise
+from config import TORTOISE_ORM
+import asyncio
+import os
+from dotenv import load_dotenv
 
-app = Flask(__name__)
+
+app = Quart(__name__)
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
 app.register_blueprint(lab3)
+app.register_blueprint(lab4)
+app.register_blueprint(lab5)
+
+
+asyncio.run(Tortoise.init(config=TORTOISE_ORM))
+
+load_dotenv() 
+app.secret_key = os.getenv('SECRET_KEY')
+app.
 
 
 @app.route("/")
-@app.route("/index")
-def index():
-    return render_template("index.html"), 200
+async def index():
+    return await render_template("index.html"), 200
 
 
 @app.route("/400")
@@ -55,8 +69,3 @@ def internal_error(error):
 @app.route("/crash")
 def crash():
     1 / 0
-
-
-
-
-

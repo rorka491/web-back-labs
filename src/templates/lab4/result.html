@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block lab %}
+    Арифмитические операции
+{% endblock %}
+
+
+{% block content %}
+    {% if error %}
+        {{error}}
+    {% else %}
+
+        {% if operation == '**' %}
+            {{x1}} <sup>{{x2}}</sup>  = {{result}} 
+        {% else %}
+            {{x1}} {{operation}} {{x2}} = {{result}}
+        {% endif %}
+
+    {% endif %}
+{% endblock %}
