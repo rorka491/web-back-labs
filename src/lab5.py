@@ -5,11 +5,18 @@ from models import User, Article
 from services.auth_service import AuthService, ValidationService
 from schemas import LoginSchema, RegisterSchema, ArticleSchema
 from pydantic import ValidationError
-
+from functools import wraps
 
 lab5 = Blueprint("lab5", __name__, url_prefix="/lab5")
 
-
+def login_required(func):
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        user = session.get('user')
+        if not user:
+            return redirect(url_for('lab5.login'))
+        return await func(*args, **kwargs)
+    return wrapper
 
 
 class HttpMethod:
@@ -30,17 +37,15 @@ async def logout() -> str:
     return redirect(url_for('lab5.index'))
 
 @lab5.route('/list')
+@login_required
 async def list() -> str:
-    login = session.get('user').get('login')
-    if not login: 
-        return redirect(url_for('lab5.login'))
-    
     articles_qs = await Article.all().select_related('author').filter(author__login=login) # решает проблему n+1
     articles = [ArticleSchema.model_validate(a) for a in articles_qs]
     return await render_template('lab5/list.html', articles=articles)
 
 
 @lab5.route('/create', methods = ['GET', 'POST'])
+@login_required
 async def create() -> str:
     if request.method == HttpMethod.GET: 
         return await render_template('lab5/create.html')
@@ -88,11 +93,3 @@ async def register() -> str:
     
 
 
-
-
-
-        
-
-
-
-    

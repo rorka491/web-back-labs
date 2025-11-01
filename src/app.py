@@ -10,8 +10,14 @@ import asyncio
 import os
 from dotenv import load_dotenv
 
+load_dotenv() 
 
-app = Quart(__name__)
+
+app = Quart(__name__, config={
+    "SECRET_KEY": os.getenv("SECRET_KEY"),
+    "DB_TYPE": os.getenv("DB_TYPE", "default")
+})
+
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
 app.register_blueprint(lab3)
@@ -19,11 +25,11 @@ app.register_blueprint(lab4)
 app.register_blueprint(lab5)
 
 
-asyncio.run(Tortoise.init(config=TORTOISE_ORM))
+@app.before_serving
+async def init_db():
+    TORTOISE_ORM["apps"]["models"]["default_connection"] = app.config["DB_TYPE"]
+    await Tortoise.init(config=TORTOISE_ORM)
 
-load_dotenv() 
-app.secret_key = os.getenv('SECRET_KEY')
-app.
 
 
 @app.route("/")

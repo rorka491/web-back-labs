@@ -11,7 +11,8 @@ HOST_ADRESS = os.getenv("HOST_ADRESS")
 
 TORTOISE_ORM = {
     "connections": {
-        "default": f"postgres://{DB_USER}:{DB_PASSWORD}@{HOST_ADRESS}/{DB_NAME}"
+        "default": f"postgres://{DB_USER}:{DB_PASSWORD}@{HOST_ADRESS}/{DB_NAME}",
+        "sqlite3": 'sqlite://db.sqlite3'
     },
     "apps": {
         "models": {
@@ -20,3 +21,6 @@ TORTOISE_ORM = {
         }
     }
 }
+
+
+
