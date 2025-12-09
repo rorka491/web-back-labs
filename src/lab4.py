@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, redirect, request, abort, make_response, session
+from quart import Blueprint, render_template, redirect, request, abort, session
 from dataclasses import dataclass, asdict
 
 lab4 = Blueprint("lab4", __name__, url_prefix="/lab4")
@@ -19,9 +19,9 @@ class User:
 
 
 
-def get_int(name: str, default=0) -> int:
+async def get_int(name: str, default=0) -> int:
     try:
-        return int(request.form.get(name))
+        return int(await request.form.get(name))
     except (TypeError, ValueError):
         return default
     
@@ -41,16 +41,16 @@ def get_result(x1, x2, operation="div") -> float | str:
 
 typeError = str
 
-def clean_form(form: dict) -> typeError:
-    x1 = form.get('x1') 
-    x2 = form.get('x2')
+async def clean_form(form: dict) -> typeError:
+    x1 = await form.get('x1') 
+    x2 = await form.get('x2')
     if not x1 or not x2: 
         return 'Поля формы должны быть заполены'
 
 
 @lab4.route('/')
-def lab() -> str:
-    return render_template('lab4/lab4.html')
+async def lab() -> str:
+    return await render_template('lab4/lab4.html')
 
 
 operations_mapping = {
@@ -62,39 +62,39 @@ operations_mapping = {
 }
 
 @lab4.route('/<string:operation>')
-def view_form(operation) -> str:
+async def view_form(operation) -> str:
     if operation not in operations_mapping:
         abort(404)
 
-    return render_template(
+    return await render_template(
         f'lab4/math-form.html', 
         operation=operation, 
         operations_mapping=operations_mapping
-    ) 
+    )
 
 
 @lab4.route('/<string:operation>', methods=['POST'])
-def operation_handler(operation):
+async def operation_handler(operation):
     form = request.form
     error = clean_form(form)
     if error: 
-        return render_template('/lab4/result.html', error=error)
+        return await render_template('/lab4/result.html', error=error)
 
     x1 = get_int('x1')
     x2 = get_int('x2')
     result = get_result(x1, x2, operation=operation)
 
-    return render_template('/lab4/result.html', x1=x1, x2=x2, result=result, operation=operations_mapping[operation])
+    return await render_template('/lab4/result.html', x1=x1, x2=x2, result=result, operation=operations_mapping[operation])
 
 tree_count = 0
 
 @lab4.route('/tree', methods=["GET", "POST"])
-def tree():
+async def tree():
     global tree_count
     if request.method == 'GET': 
-        return render_template('lab4/tree.html', tree_count=tree_count)
+        return await render_template('lab4/tree.html', tree_count=tree_count)
     
-    form = request.form
+    form = await request.form
     operation = form.get('operation')
 
     match operation: 
@@ -105,13 +105,12 @@ def tree():
 
 
 
-
 users = {
     1: User('Rodion', '123', 'Родион Горшков'),
     2: User('Dmitriy', '321', 'Дмитрий Михеев')
 }
 
-def check_credentials(login: str, password: str) -> User | None:
+async def check_credentials(login: str, password: str) -> User | None:
     for user in users.values(): 
         if user.login == login and user.password == password:
             return user
@@ -119,7 +118,7 @@ def check_credentials(login: str, password: str) -> User | None:
 
 
 @lab4.route('/login', methods=['GET', 'POST'])
-def login():
+async def login():
     error = ''
     login = ''
     password = ''
@@ -129,7 +128,7 @@ def login():
         if 'login' in session: 
             authorized = True
             login = session['login']
-        return render_template(
+        return await render_template(
             '/lab4/login.html',
             authorized=authorized, 
             login=login,
@@ -138,23 +137,23 @@ def login():
     
     #POST
 
-    form = request.form
+    form = await request.form
     login = form.get('login')
     password = form.get('password')
     
-    user = check_credentials(login, password)
+    user = await check_credentials(login, password)
     if user:
         session['user'] = user.to_dict()
         authorized = True
-        return render_template(
-            'lab4/login.html', 
+        return await render_template(
+            '/lab4/login.html', 
             authorized=True, 
             login=login, 
             password=password, 
         )
 
     error = 'Неверный логин или пароль'
-    return render_template('lab4/login.html', error=error, authorized=authorized)
+    return await render_template('/lab4/login.html', error=error, authorized=authorized)
 
 @lab4.route('/logout', methods=['POST'])
 def logout(): 
@@ -163,10 +162,11 @@ def logout():
 
 
 @lab4.route('/fridge', methods=['GET', 'POST'])
-def fridge():
+async def fridge():
+    form = await request.form
     message = ''
     snowflakes = 0
-    temperature = request.form.get('temperature')
+    temperature = form.get('temperature')
 
     if request.method == 'POST':
         if not temperature:
@@ -190,7 +190,7 @@ def fridge():
             except ValueError:
                 message = 'Ошибка: температура должна быть числом'
 
-    return render_template(
+    return await render_template(
         'lab4/fridge.html',
         message=message,
         snowflakes=snowflakes
@@ -198,7 +198,7 @@ def fridge():
 
 
 @lab4.route('/grain', methods=['GET', 'POST'])
-def grain():
+async def grain():
     prices = {
         'ячмень': 12000,
         'овёс': 8500,
@@ -211,8 +211,9 @@ def grain():
     total = 0
 
     if request.method == 'POST':
-        grain = request.form.get('grain')
-        weight = request.form.get('weight')
+        form = await request.form
+        grain = form.get('grain')
+        weight = form.get('weight')
 
         if not grain or grain not in prices:
             message = 'Ошибка: не выбрано зерно'
@@ -240,21 +241,12 @@ def grain():
             except ValueError:
                 message = 'Ошибка: вес должен быть числом'
 
-    return render_template(
+    return await render_template(
         'lab4/grain.html',
         message=message,
         discount_message=discount_message
     )
 
 
-
-# @lab4.route(methods = ['GET', 'POST'])
-# def sign_up():
-    
-#     if request.method == 'POST': 
-#         form = request.form
-#         login = form.get(login, None)
-#         password = form.get(password, None)
-        
 
 

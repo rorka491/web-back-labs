@@ -9,11 +9,14 @@
     <h1>Формы POST</h1>
     <div></div>
     <ol>
-        <li><a href="/lab4/div">Деление</a></li>
-        <li><a href="/lab4/dif">Деление</a></li>
-        <li><a href="/lab4/sum">Деление</a></li>
-        <li><a href="/lab4/exp">Деление</a></li>
-        <li><a href="/lab4/">Деление</a></li>
-        
+        <li><a href="{{url_for('lab4.view_form', operation='div')}}">Деление</a></li>
+        <li><a href="{{url_for('lab4.view_form', operation='dif')}}">Вычитание</a></li>
+        <li><a href="{{url_for('lab4.view_form', operation='sum')}}">Сложение</a></li>
+        <li><a href="{{url_for('lab4.view_form', operation='exp')}}">Уменожение</a></li>
+        <li><a href="{{url_for('lab4.lab')}}">Главная</a></li>
+        <li><a href="{{url_for('lab4.tree')}}">Дерево</a></li>
+        <li><a href="{{url_for('lab4.login')}}">Логин</a></li>
+        <li><a href="{{url_for('lab4.fridge')}}">Холодильник</a></li>
+        <li><a href="{{url_for('lab4.grain')}}">Зерно</a></li>
     </ol>
 {% endblock %}

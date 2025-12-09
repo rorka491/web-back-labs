@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<style>
+#films-table tbody tr:hover {
+    background-color: #f0f8ff;
+    position: relative;
+}
+
+#films-table tbody tr:hover::after {
+    content: attr(data-description);
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1.5em;
+    background: #fff;
+    padding: 8px 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    z-index: 10;
+}
+</style>
+{% endblock styles %}
+
+{% block content %}
+
+<table id="films-table" style="width: 60%; border-collapse: separate; border-spacing: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; margin: 20px auto;">
+    <h1 style="text-align: center; margin-bottom: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Films</h1>
+    <thead>
+        <tr style="background-color: #f5f5f5; color: #333; text-align: left; font-weight: 500;">
+            <th style="padding: 12px 15px;">Title</th>
+            <th style="padding: 12px 15px;">Year</th>
+            <th style="padding: 12px 15px; text-align: center; width: 150px;"></th>
+        </tr>
+    </thead>
+    <tbody style="background-color: white;">
+        <!-- Пример строки -->
+        <tr style="cursor: pointer; transition: background 0.2s;">
+        </tr>
+    </tbody>
+</table>
+
+<form id="create-film-form" style="display: flex; flex-direction: column; max-width: 400px; gap: 10px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 20px auto;">
+    <h2 style="margin: 30px 0 10px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Create Film</h2>
+    <input type="text" name="title" placeholder="Title" required style="padding: 10px; border-radius: 8px; border: 1px solid #d1d1d6; background-color: #f9f9f9;">
+    <input type="text" name="title_ru" placeholder="Title RU" required style="padding: 10px; border-radius: 8px; border: 1px solid #d1d1d6; background-color: #f9f9f9;">
+    <input type="number" name="year" placeholder="Year" min="1895" max="2025" required style="padding: 10px; border-radius: 8px; border: 1px solid #d1d1d6; background-color: #f9f9f9;">
+    <input type="text" name="description" placeholder="Description" required style="padding: 10px; border-radius: 8px; border: 1px solid #d1d1d6; background-color: #f9f9f9;">
+    <button type="submit" style="padding: 12px; background-color: #007AFF; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">Create</button>
+</form>
+{% endblock %}
+
+{% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const apiUrl = '/lab7/api/films';
+
+    async function fetchFilms() {
+        const res = await fetch(apiUrl);
+        const films = await res.json();
+
+        const tbody = document.querySelector('#films-table tbody');
+        tbody.innerHTML = '';
+
+        films.forEach(film => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${film.title}</td>
+                <td>${film.year}</td>
+                <td>
+                    <button class="delete-btn" data-id="${film.id}" style="padding: 6px 12px; margin-right: 5px; border: 1px solid #ccc; border-radius: 4px; background-color: #f5f5f5; color: #333; cursor: pointer; transition: background 0.2s;">
+                        Delete
+                    </button>
+                    <button class="details-btn" data-id="${film.id}" style="padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; background-color: #e0e0e0; color: #333; cursor: pointer; transition: background 0.2s;">
+                        Details
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Навешиваем события после создания элементов
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.dataset.id;
+                const res = await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+                if (res.ok) fetchFilms();
+                else alert('Failed to delete film');
+            });
+        });
+
+        document.querySelectorAll('.details-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.dataset.id;
+                const res = await fetch(`${apiUrl}/${id}`);
+                if (!res.ok) return alert('Film not found');
+                const film = await res.json();
+                alert(`Title: ${film.title}\nTitle RU: ${film.title_ru}\nYear: ${film.year}\nDescription: ${film.description}`);
+            });
+        });
+    }
+
+    const form = document.getElementById('create-film-form');
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const formData = Object.fromEntries(new FormData(form));
+        formData.year = Number(formData.year);
+
+        const res = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+
+        if (res.ok) {
+            form.reset();
+            fetchFilms();
+        } else {
+            const err = await res.json();
+            alert('Error: ' + JSON.stringify(err));
+        }
+    });
+
+    fetchFilms();
+});
+</script>
+{% endblock %}

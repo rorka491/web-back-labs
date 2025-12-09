@@ -4,9 +4,15 @@
 <h1>Статьи</h1>
 {% if articles %}
     {% for article in articles %}
-            <h2>{{ article.title }}</h2>
-            <blockquote><p>{{ article.text }}</p></blockquote>
-            <p><em>by {{ article.author.username }}</em></p>
+        {% if article.is_public %}
+            <h3>Публичная статья</h3>
+        {% endif %}
+        {% if article.is_favorite %}
+            <h3>Любимая статья</h3>
+        {% endif %}
+        <h2>{{ article.title }}</h2>
+        <blockquote><p>{{ article.text }}</p></blockquote>
+        <p><em>by {{ article.author.username }}</em></p>
     {% endfor %}
 {% else %}
     <p>Пока статей нет</p>

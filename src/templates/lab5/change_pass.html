@@ -1,0 +1,23 @@
+{% extends 'lab5/lab5.html' %}
+
+{% block content %}
+    <h1>Смена имени и пароля</h1>
+    <form method="post">
+        {% if error %}
+            {{error}}
+        {% endif %}
+        <label>
+            Новое имя:
+            <input type="text" name="username" value="{{ current_user.username }}">
+        </label>
+        <label>
+            Новый пароль:
+            <input type="password" name="password">
+        </label>
+        <label>
+            Подтверждение пароля:
+            <input type="password" name="password_confirm">
+        </label>
+        <button type="submit">Сохранить</button>
+    </form>
+{% endblock %}

@@ -3,31 +3,25 @@
 {% block content %}
 <h1>Create Article</h1>
 
-{% if error %}
-    <p style="color:red">{{ error }}</p>
-{% endif %}
-
 <form method="post" action="{{ url_for('lab5.create') }}">
     <div style="margin-bottom: 1em;">
         <label for="title">Title</label><br>
-        <input type="text" id="title" name="title" required>
+        <input type="text" name="title" required>
     </div>
 
     <div style="margin-bottom: 1em;">
         <label for="text">Text</label><br>
-        <textarea id="text" name="text" rows="5" required></textarea>
+        <textarea name="text" rows="5" required></textarea>
     </div>
 
-    {% if authors %}
     <div style="margin-bottom: 1em;">
-        <label for="author">Author</label><br>
-        <select id="author" name="author" required>
-            {% for author in authors %}
-                <option value="{{ author.id }}">{{ author.username }}</option>
-            {% endfor %}
-        </select>
+        <label for="text">is_favorite</label><br>
+        <input type="checkbox" name="is_favorite">
     </div>
-    {% endif %}
+        <div style="margin-bottom: 1em;">
+        <label for="text">is_public</label><br>
+        <input type="checkbox" name="is_public">
+    </div>
 
     <button type="submit">Create</button>
 </form>

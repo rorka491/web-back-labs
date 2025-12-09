@@ -1,7 +1,8 @@
 from typing import TYPE_CHECKING
-from models import User
-from schemas import LoginSchema, RegisterSchema, UserOut
+from src.models import User
+from src.schemas import LoginSchema, RegisterSchema, UserOut
 from pydantic import ValidationError
+from .hash_service import verify_password, hash_password
 
 
 if TYPE_CHECKING: 
@@ -31,7 +32,7 @@ class AuthService:
     @staticmethod
     async def login_user(data: LoginSchema):
         user = await User.get_or_none(login=data.login)
-        if not user or user.password != data.password:
+        if not user or not verify_password(data.password, user.password):
             return None, 'Неверный логин или пароль'
 
         return UserOut.model_validate(user), None
@@ -40,7 +41,8 @@ class AuthService:
     async def register_user(data: RegisterSchema) -> str|None:
         if await User.exists(login=data.login):
             return 'Пользователь уже существует'
-
+        data.password = hash_password(data.password)
+        
         await User.create(**data.model_dump())
         return None
     

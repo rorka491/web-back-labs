@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block script %}
+<script>
+class OfficeManager {
+    constructor() {
+        this.url = '/lab6/api';
+    }
+
+    async fetchOffices() {
+        try {
+            const response = await this.makeRequest('info');
+            const officeList = response.result && response.result.office_list ? response.result.office_list : [];
+            this.renderOfficeList(officeList);
+        } catch (error) {
+            console.error('Ошибка загрузки офисов:', error);
+            alert('Не удалось загрузить список офисов');
+        }
+    }
+
+    async bookOffice(officeId) {
+        await this.handleOfficeAction('booking', officeId);
+    }
+
+    async cancelOffice(officeId) {
+        await this.handleOfficeAction('cancelation', officeId);
+    }
+
+    async handleOfficeAction(method, officeId) {
+        try {
+            const response = await this.makeRequest(method, { office_id: officeId });
+            
+            if (response.error) {
+                this.handleError(response.error);
+            } else {
+                await this.fetchOffices();
+            }
+        } catch (error) {
+            console.error('Ошибка операции:', error);
+            alert('Произошла ошибка при выполнении операции');
+        }
+    }
+
+    async makeRequest(method, params = {}) {
+        const request = {
+            jsonrpc: '2.0',
+            method,
+            ...params
+        };
+
+        const response = await fetch(this.url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(request)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    handleError(error) {
+        const errorMessages = {
+            1: 'Вы не авторизованы',
+            2: 'Офис не найден или недоступен для бронирования',
+            [-32601]: 'Метод не найден'
+        };
+        
+        alert(errorMessages[error.code] || error.message || 'Произошла ошибка');
+    }
+
+    renderOfficeList(offices) {
+        const list = document.getElementById('office-list');
+        if (!list) return;
+
+        list.innerHTML = offices.map(office => {
+            const status = office.is_booking ? 'Забронирован' : 'Свободен';
+            const tenantInfo = office.tenant ? `<br>Арендатор: ${office.tenant.username}` : '';
+            const button = !office.is_booking 
+                ? `<button onclick="officeManager.bookOffice(${office.id})">Забронировать</button>`
+                : `<button onclick="officeManager.cancelOffice(${office.id})">Отменить бронь</button>`;
+
+            return `
+                <li>
+                    <strong>${office.title}</strong> - ${office.price}р
+                    <br>
+                    Статус: ${status}
+                    ${tenantInfo}
+                    <div class="office-actions">
+                        ${button}
+                    </div>
+                </li>
+            `;
+        }).join('');
+    }
+}
+
+const officeManager = new OfficeManager();
+
+document.addEventListener('DOMContentLoaded', function() {
+    officeManager.fetchOffices();
+});
+</script>
+{% endblock %}
+
+
+{% block content %}
+    <h1>Список кабинетов</h1>
+    <ul id="office-list"></ul>
+{% endblock %}
